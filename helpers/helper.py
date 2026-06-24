@@ -36,5 +36,7 @@ class HelperPage:
         tomorrow = today + timedelta(days=1)
         tomorrow_formatted = tomorrow.strftime("%a %b %d %Y") 
         print(f"Tomorrow's date is: {tomorrow_formatted}")
-        return current_date_str,tomorrow_formatted
+        return current_date_str,tomorrow_formatted   
+        print("Time")
+    
 
