@@ -11,17 +11,26 @@ class HelperPage:
     def __init__(self,driver):
         self.driver=driver
         self.wait=WebDriverWait(driver,30)
+        self.wait_more=WebDriverWait(driver,45)
     def URL(self,url):
         self.driver.get(url)
     def findElement(self,locator):
         return self.wait.until(EC.element_to_be_clickable(locator))
     def findElements(self,locator):
         return self.wait.until(EC.presence_of_all_elements_located(locator))
+    def sendkey_morewait(self,locator,text):
+        element= self.wait_more.until(EC.element_to_be_clickable(locator))
+        element.clear()
+        element.send_keys(text)
+    def moreclick(self,locator):
+        element= self.wait_more.until(EC.element_to_be_clickable(locator))
+        element.click()
     def click(self,locator):
         element= self.wait.until(EC.element_to_be_clickable(locator))
         element.click()
     def sendKeys(self,locator,text):
         element=self.wait.until(EC.element_to_be_clickable(locator))
+        element.clear()
         element.clear()
         element.send_keys(text)
     def actionChains(self,locator):

@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 from pages.base_page import BasePage
 from pages.date_page import date_time
-
+from selenium.common.exceptions import StaleElementReferenceException
 class HomePage(BasePage,date_time):
     # Locators
     MODAL_CLOSE_BTN = (By.XPATH, "//*[@data-cy='closeModal']")
@@ -25,14 +25,20 @@ class HomePage(BasePage,date_time):
             pass # Skip if popup doesn't show up
 
     def navigate_to_hotels(self):
+        self.findElement(self.HOTELS_MENU_TAB)
         self.click(self.HOTELS_MENU_TAB)
 
     def search_hotels_for_mumbai(self):
-        self.click(self.CITY_SEARCH_TRIGGER)
-        self.sendKeys(self.CITY_INPUT_FIELD, "Mumbai")
-        # time.sleep(2) # Brief pause for search dropdown to populate
-        self.findElement(self.FIRST_CITY_SUGGESTION)
-        self.click(self.FIRST_CITY_SUGGESTION)
+        self.moreclick(self.CITY_SEARCH_TRIGGER)
+        self.sendkey_morewait(self.CITY_INPUT_FIELD, "Mumbai")
+        # time.sleep(5)
+        for _ in range(3):
+            try:
+                self.findElement(self.FIRST_CITY_SUGGESTION)
+                self.click(self.FIRST_CITY_SUGGESTION)
+                break
+            except StaleElementReferenceException:
+                pass
 
         # time.sleep(5) # Wait for page load and listings to populate
     def get_today_date_locator(self):
